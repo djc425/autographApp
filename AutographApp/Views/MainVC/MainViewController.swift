@@ -9,7 +9,9 @@ import UIKit
 
 class MainVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate {
     let mainView = GalleryView()
-    let autographs = [AutographCell]()
+    let autographCell = [AutographCell]()
+
+
 
 
     let newPhotoBttn: UIButton = {
@@ -25,11 +27,28 @@ class MainVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         return npb
     }()
 
+    let testViewBttn: UIButton = {
+        let tvb = UIButton(type: .system)
+        tvb.setTitle("PUSH ME", for: .normal)
+        tvb.addTarget(self, action: #selector(testPressed), for: .touchUpInside)
+        tvb.translatesAutoresizingMaskIntoConstraints = false
+        return tvb
+    }()
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title =  "Gallery"
         mainView.autographCollection.delegate = self
         //self.navigationItem.setHidesBackButton(true, animated: false)
+    }
+
+    @objc func testPressed(){
+        let signatureView = SignatureScreen()
+        signatureView.modalTransitionStyle = .crossDissolve
+        signatureView.modalPresentationStyle = .overCurrentContext
+        
+        present(signatureView, animated: true)
     }
 
     @objc func newPhotoPressed(){
@@ -39,12 +58,20 @@ class MainVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
        // imgPicker.sourceType = .camera
         imgPicker.sourceType = .photoLibrary
         present(imgPicker, animated: true)
-        /* {
-            print("PICKED")
-        } */
+        {
+print("blurple")
+
+
+        }
+        let signatureView = SignatureScreen()
+        signatureView.modalTransitionStyle = .crossDissolve
+        signatureView.modalPresentationStyle = .overCurrentContext
+        present(signatureView, animated: true)
     }
 
 
+
+
 }
 
 extension MainVC {
@@ -53,23 +80,35 @@ extension MainVC {
 
 
 extension MainVC {
+
 
     override func loadView() {
         view = UIView()
         view.backgroundColor = .white
+        view.addSubview(testViewBttn)
         view.addSubview(mainView)
         view.addSubview(newPhotoBttn)
 
+
+
         NSLayoutConstraint.activate([
+
+            testViewBttn.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            testViewBttn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
             mainView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             mainView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
             mainView.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
             mainView.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
 
+
             newPhotoBttn.topAnchor.constraint(equalTo: mainView.bottomAnchor, constant: 20),
             newPhotoBttn.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
             newPhotoBttn.widthAnchor.constraint(equalTo: mainView.widthAnchor, multiplier: 0.4),
             newPhotoBttn.heightAnchor.constraint(equalTo: mainView.heightAnchor, multiplier: 0.2)
+
+
+
         ])
     }
 }

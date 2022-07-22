@@ -16,6 +16,7 @@
 		6E402A2A2880B89C00C39483 /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E402A292880B89C00C39483 /* WelcomeVC.swift */; };
 		6E402A2D2880BA4B00C39483 /* WelcomeInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E402A2C2880BA4B00C39483 /* WelcomeInstructionsView.swift */; };
 		6E402A302881D4BB00C39483 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E402A2F2881D4BB00C39483 /* GalleryView.swift */; };
+		6E68056E288A395F00E8AC06 /* SignatureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E68056D288A395F00E8AC06 /* SignatureScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		6E402A292880B89C00C39483 /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
 		6E402A2C2880BA4B00C39483 /* WelcomeInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeInstructionsView.swift; sourceTree = "<group>"; };
 		6E402A2F2881D4BB00C39483 /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		6E68056D288A395F00E8AC06 /* SignatureScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 		6E402A282880B86D00C39483 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6E68056C288A394300E8AC06 /* SignatureScreen */,
 				6E402A2E2881BF0C00C39483 /* MainVC */,
 				6E402A2B2880BA2F00C39483 /* WelcomeScreen */,
 				6E0CA761288373B300350A78 /* Autographs.swift */,
@@ -98,6 +101,14 @@
 				6E402A2F2881D4BB00C39483 /* GalleryView.swift */,
 			);
 			path = MainVC;
+			sourceTree = "<group>";
+		};
+		6E68056C288A394300E8AC06 /* SignatureScreen */ = {
+			isa = PBXGroup;
+			children = (
+				6E68056D288A395F00E8AC06 /* SignatureScreen.swift */,
+			);
+			path = SignatureScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +183,7 @@
 			files = (
 				6E187E01287CA5260009B3D7 /* MainViewController.swift in Sources */,
 				6E402A302881D4BB00C39483 /* GalleryView.swift in Sources */,
+				6E68056E288A395F00E8AC06 /* SignatureScreen.swift in Sources */,
 				6E0CA762288373B300350A78 /* Autographs.swift in Sources */,
 				6E187DFD287CA5260009B3D7 /* AppDelegate.swift in Sources */,
 				6E187DFF287CA5260009B3D7 /* SceneDelegate.swift in Sources */,
