@@ -7,12 +7,27 @@
 
 import UIKit
 
-class MainVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate {
+class MainVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDelegate, UIImagePickerControllerDelegate {
     let mainView = GalleryView()
     let autographCell = [AutographCell]()
 
+    let signatureView = SignatureScreen()
 
+    var signatureImg: UIImage! {
+        didSet {
+            imageTaken.image = signatureImg
+        }
+    }
 
+    // image the user takes
+    var imageTaken: UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(systemName: "person.and.arrow.left.and.arrow.right")
+        img.backgroundColor = .darkGray
+        img.layer.cornerRadius = 20
+        return img
+    }()
 
     let newPhotoBttn: UIButton = {
         let npb = UIButton(type: .system)
@@ -40,44 +55,59 @@ class MainVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCon
         super.viewDidLoad()
         title =  "Gallery"
         mainView.autographCollection.delegate = self
+
         //self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
+    //Push Me Bttn
     @objc func testPressed(){
-        let signatureView = SignatureScreen()
+
         signatureView.modalTransitionStyle = .crossDissolve
         signatureView.modalPresentationStyle = .overCurrentContext
-        
+
         present(signatureView, animated: true)
     }
 
     @objc func newPhotoPressed(){
-        let imgPicker = UIImagePickerController()
-        imgPicker.allowsEditing = true
-        imgPicker.delegate = self
-       // imgPicker.sourceType = .camera
-        imgPicker.sourceType = .photoLibrary
-        present(imgPicker, animated: true)
-        {
-print("blurple")
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.allowsEditing = false
+        picker.delegate = self
+        present(picker, animated: true)
+
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+
+       addSignature(putOn: image)
 
 
-        }
+
+
+    }
+
+    func addSignature(putOn image: UIImage)  {
         let signatureView = SignatureScreen()
         signatureView.modalTransitionStyle = .crossDissolve
         signatureView.modalPresentationStyle = .overCurrentContext
-        present(signatureView, animated: true)
+         present(signatureView, animated: true, completion: {
+             signatureView.passedImage = image
+        })
+
+
+
     }
-
-
-
-
 }
 
 extension MainVC {
 
 }
-
 
 extension MainVC {
 
@@ -86,8 +116,11 @@ extension MainVC {
         view = UIView()
         view.backgroundColor = .white
         view.addSubview(testViewBttn)
+        view.addSubview(imageTaken)
         view.addSubview(mainView)
         view.addSubview(newPhotoBttn)
+
+
 
 
 
@@ -95,6 +128,11 @@ extension MainVC {
 
             testViewBttn.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             testViewBttn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            imageTaken.topAnchor.constraint(equalTo: testViewBttn.bottomAnchor, constant: 50),
+            imageTaken.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageTaken.widthAnchor.constraint(equalToConstant: 150),
+            imageTaken.heightAnchor.constraint(equalToConstant: 150),
 
             mainView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             mainView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
@@ -112,3 +150,5 @@ extension MainVC {
         ])
     }
 }
+
+
