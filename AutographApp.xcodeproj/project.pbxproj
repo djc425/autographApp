@@ -18,6 +18,10 @@
 		6E402A2D2880BA4B00C39483 /* WelcomeInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E402A2C2880BA4B00C39483 /* WelcomeInstructionsView.swift */; };
 		6E402A302881D4BB00C39483 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E402A2F2881D4BB00C39483 /* GalleryView.swift */; };
 		6E68056E288A395F00E8AC06 /* SignatureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E68056D288A395F00E8AC06 /* SignatureScreen.swift */; };
+		6E80CA77288DEAFD002F0D15 /* AutographWithSignature+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80CA75288DEAFD002F0D15 /* AutographWithSignature+CoreDataClass.swift */; };
+		6E80CA78288DEAFD002F0D15 /* AutographWithSignature+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80CA76288DEAFD002F0D15 /* AutographWithSignature+CoreDataProperties.swift */; };
+		6E80CA7B288E22FD002F0D15 /* CoreDataMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80CA7A288E22FC002F0D15 /* CoreDataMethods.swift */; };
+		6ED3DF7F288DE9F1000A535F /* AutographApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6ED3DF7D288DE9F1000A535F /* AutographApp.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +38,10 @@
 		6E402A2C2880BA4B00C39483 /* WelcomeInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeInstructionsView.swift; sourceTree = "<group>"; };
 		6E402A2F2881D4BB00C39483 /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		6E68056D288A395F00E8AC06 /* SignatureScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureScreen.swift; sourceTree = "<group>"; };
+		6E80CA75288DEAFD002F0D15 /* AutographWithSignature+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutographWithSignature+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6E80CA76288DEAFD002F0D15 /* AutographWithSignature+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutographWithSignature+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6E80CA7A288E22FC002F0D15 /* CoreDataMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMethods.swift; sourceTree = "<group>"; };
+		6ED3DF7E288DE9F1000A535F /* CoreDataExample.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataExample.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,9 +77,11 @@
 				6E187DFC287CA5260009B3D7 /* AppDelegate.swift */,
 				6E187DFE287CA5260009B3D7 /* SceneDelegate.swift */,
 				6E402A282880B86D00C39483 /* Views */,
+				6E80CA79288DECD2002F0D15 /* AutographCoreData */,
 				6E187E05287CA5270009B3D7 /* Assets.xcassets */,
 				6E187E07287CA5270009B3D7 /* LaunchScreen.storyboard */,
 				6E187E0A287CA5270009B3D7 /* Info.plist */,
+				6ED3DF7D288DE9F1000A535F /* AutographApp.xcdatamodeld */,
 			);
 			path = AutographApp;
 			sourceTree = "<group>";
@@ -120,6 +130,17 @@
 				6E68056D288A395F00E8AC06 /* SignatureScreen.swift */,
 			);
 			path = SignatureScreen;
+			sourceTree = "<group>";
+		};
+		6E80CA79288DECD2002F0D15 /* AutographCoreData */ = {
+			isa = PBXGroup;
+			children = (
+				6E80CA75288DEAFD002F0D15 /* AutographWithSignature+CoreDataClass.swift */,
+				6E80CA76288DEAFD002F0D15 /* AutographWithSignature+CoreDataProperties.swift */,
+				6E80CA7A288E22FC002F0D15 /* CoreDataMethods.swift */,
+			);
+			name = AutographCoreData;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,13 +215,17 @@
 			files = (
 				6E187E01287CA5260009B3D7 /* MainViewController.swift in Sources */,
 				6E402A302881D4BB00C39483 /* GalleryView.swift in Sources */,
+				6E80CA78288DEAFD002F0D15 /* AutographWithSignature+CoreDataProperties.swift in Sources */,
 				6E68056E288A395F00E8AC06 /* SignatureScreen.swift in Sources */,
 				6E3BF530288CFDE9003C8123 /* Signature.swift in Sources */,
 				6E0CA762288373B300350A78 /* Autographs.swift in Sources */,
 				6E187DFD287CA5260009B3D7 /* AppDelegate.swift in Sources */,
 				6E187DFF287CA5260009B3D7 /* SceneDelegate.swift in Sources */,
+				6ED3DF7F288DE9F1000A535F /* AutographApp.xcdatamodeld in Sources */,
+				6E80CA77288DEAFD002F0D15 /* AutographWithSignature+CoreDataClass.swift in Sources */,
 				6E402A2D2880BA4B00C39483 /* WelcomeInstructionsView.swift in Sources */,
 				6E402A2A2880B89C00C39483 /* WelcomeVC.swift in Sources */,
+				6E80CA7B288E22FD002F0D15 /* CoreDataMethods.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +437,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6ED3DF7D288DE9F1000A535F /* AutographApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6ED3DF7E288DE9F1000A535F /* CoreDataExample.xcdatamodel */,
+			);
+			currentVersion = 6ED3DF7E288DE9F1000A535F /* CoreDataExample.xcdatamodel */;
+			path = AutographApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6E187DF1287CA5260009B3D7 /* Project object */;
 }

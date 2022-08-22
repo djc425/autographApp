@@ -77,7 +77,7 @@ class SignatureScreen: UIViewController {
 
 // MARK: Touch overrides
 extension SignatureScreen {
-    
+
     // touches began will record where the user starts signing
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AutographWithSignature" representedClassName="AutographWithSignature" syncable="YES">
+        <attribute name="autograph" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+    </entity>
+    <elements>
+        <element name="AutographWithSignature" positionX="-54" positionY="-9" width="128" height="74"/>
+    </elements>
+</model>

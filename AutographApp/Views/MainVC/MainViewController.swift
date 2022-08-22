@@ -7,9 +7,12 @@
 
 import UIKit
 
-class MainVC: UIViewController, UINavigationControllerDelegate, UICollectionViewDelegate, UIImagePickerControllerDelegate {
-    let mainView = GalleryView()
-    let autographCell = [AutographCell]()
+class MainVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+
+
+    let galleryView = GalleryView()
+
+    let autographCellArray = [AutographCell]()
 
     let signatureView = SignatureScreen()
 
@@ -54,7 +57,9 @@ class MainVC: UIViewController, UINavigationControllerDelegate, UICollectionView
     override func viewDidLoad() {
         super.viewDidLoad()
         title =  "Gallery"
-        mainView.autographCollection.delegate = self
+        galleryView.autographCollection.register(AutographCell.self, forCellWithReuseIdentifier: AutographCell.identifier)
+        galleryView.autographCollection.delegate = self
+        galleryView.autographCollection.dataSource = self
 
         //self.navigationItem.setHidesBackButton(true, animated: false)
     }
@@ -77,6 +82,39 @@ class MainVC: UIViewController, UINavigationControllerDelegate, UICollectionView
 
     }
 
+    func addSignature(putOn image: UIImage)  {
+        signatureView.modalTransitionStyle = .crossDissolve
+        signatureView.modalPresentationStyle = .overCurrentContext
+         present(signatureView, animated: true, completion: {
+             self.signatureView.passedImage = image
+        })
+
+
+
+    }
+}
+
+// MARK: collectionView Methods
+extension MainVC {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("number")
+        return 5
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AutographCell.identifier, for: indexPath) as? UICollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        print("collection")
+        return cell
+    }
+
+
+}
+
+// MARK: image picker methods
+extension MainVC {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
@@ -87,42 +125,20 @@ class MainVC: UIViewController, UINavigationControllerDelegate, UICollectionView
 
        addSignature(putOn: image)
 
-
-
-
-    }
-
-    func addSignature(putOn image: UIImage)  {
-        let signatureView = SignatureScreen()
-        signatureView.modalTransitionStyle = .crossDissolve
-        signatureView.modalPresentationStyle = .overCurrentContext
-         present(signatureView, animated: true, completion: {
-             signatureView.passedImage = image
-        })
-
-
-
     }
 }
 
+
+// MARK: load view
 extension MainVC {
-
-}
-
-extension MainVC {
-
 
     override func loadView() {
         view = UIView()
         view.backgroundColor = .white
         view.addSubview(testViewBttn)
         view.addSubview(imageTaken)
-        view.addSubview(mainView)
+        view.addSubview(galleryView)
         view.addSubview(newPhotoBttn)
-
-
-
-
 
         NSLayoutConstraint.activate([
 
@@ -134,19 +150,16 @@ extension MainVC {
             imageTaken.widthAnchor.constraint(equalToConstant: 150),
             imageTaken.heightAnchor.constraint(equalToConstant: 150),
 
-            mainView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            mainView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
-            mainView.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
-            mainView.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
+            galleryView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            galleryView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
+            galleryView.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
+            galleryView.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
 
 
-            newPhotoBttn.topAnchor.constraint(equalTo: mainView.bottomAnchor, constant: 20),
-            newPhotoBttn.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
-            newPhotoBttn.widthAnchor.constraint(equalTo: mainView.widthAnchor, multiplier: 0.4),
-            newPhotoBttn.heightAnchor.constraint(equalTo: mainView.heightAnchor, multiplier: 0.2)
-
-
-
+            newPhotoBttn.topAnchor.constraint(equalTo: galleryView.bottomAnchor, constant: 20),
+            newPhotoBttn.centerXAnchor.constraint(equalTo: galleryView.centerXAnchor),
+            newPhotoBttn.widthAnchor.constraint(equalTo: galleryView.widthAnchor, multiplier: 0.4),
+            newPhotoBttn.heightAnchor.constraint(equalTo: galleryView.heightAnchor, multiplier: 0.2)
         ])
     }
 }

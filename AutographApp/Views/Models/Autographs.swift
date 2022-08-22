@@ -12,3 +12,7 @@ struct Autograph {
     var image: UIImage
     var autograph: UIImage
 }
+
+struct CollectionViewModel {
+    
+}
