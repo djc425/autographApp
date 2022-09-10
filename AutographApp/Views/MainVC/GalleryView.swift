@@ -8,7 +8,7 @@
 import UIKit
 
 // Want this to be a horizontal scrolling gallery of collection view cells that take up most of the box
-class GalleryView: UIView {
+class GalleryViewCollectionView: UIView {
 
     let autographCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,7 +20,6 @@ class GalleryView: UIView {
         agc.isScrollEnabled = true
 
         return agc
-
     }()
 
     override init(frame: CGRect = .zero) {
@@ -55,7 +54,6 @@ class AutographCell: UICollectionViewCell {
         super.init(frame: frame)
 
       configureCell()
-
     }
 
     let testLabel: UILabel = {
@@ -80,4 +78,37 @@ class AutographCell: UICollectionViewCell {
             testLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5)
         ])
     }
+}
+
+class GalleryViewTableView: UIView {
+
+    var tableViewGallery: UITableView = {
+        let tableViewGallery = UITableView()
+        tableViewGallery.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        //tableViewGallery.
+        tableViewGallery.translatesAutoresizingMaskIntoConstraints = false
+
+        return tableViewGallery
+    }()
+
+    override func layoutSubviews() {
+        tableViewGallery.frame = self.bounds
+    }
+
+    override init(frame: CGRect = .zero) {
+        super.init(frame: frame)
+        configure()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(){
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .black.withAlphaComponent(0.3)
+        self.layer.cornerRadius = 20
+        self.addSubview(tableViewGallery)
+    }
+
 }

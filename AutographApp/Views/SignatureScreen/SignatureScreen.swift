@@ -15,10 +15,10 @@ class SignatureScreen: UIViewController {
     var inkColor = UIColor.black
     var brushWidth: CGFloat = 10
     var opacity: CGFloat = 1.0
-    // we'll use this Bool later to tell when we've lifted our finger
+    //Use this Bool later to tell when we've lifted our finger
     var swiped = false
 
-    // Image view for where we're showing the signature, think we'll delete this later, but more for a test.
+    //Image view for where we're showing the signature, think we'll delete this later, but more for a test.
     var signatureImageView: UIImageView = {
         let siv = UIImageView()
         siv.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +39,7 @@ class SignatureScreen: UIViewController {
 //        UIDevice.current.setValue(value, forKey: "orientation")
 //    }
 
-    // drawing function
+    //MARK: Drawing function
     func drawLine(from: CGPoint, to: CGPoint) {
         UIGraphicsBeginImageContext(signatureImageView.frame.size)
          let context = UIGraphicsGetCurrentContext()!
@@ -59,9 +59,9 @@ class SignatureScreen: UIViewController {
         signatureImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         signatureImageView.alpha = opacity
         UIGraphicsEndImageContext()
-
     }
 
+    //MARK: Get current date
     func getDate() -> String {
        let currentDate = Date()
         return currentDate.formatted(date: .complete, time: .omitted).description
@@ -75,7 +75,6 @@ class SignatureScreen: UIViewController {
 
 // MARK: Touch overrides
 extension SignatureScreen {
-
     // touches began will record where the user starts signing
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -108,7 +107,7 @@ extension SignatureScreen {
     }
 }
 
-// MARK: Load View Extension
+// MARK: Load View Ext + Constraints
 extension SignatureScreen {
 
     override func loadView() {
