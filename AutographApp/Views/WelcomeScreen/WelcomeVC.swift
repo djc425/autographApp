@@ -7,9 +7,13 @@
 
 import UIKit
 
+//View Controller that welcomes the user and displays the instructions
+//TODO: Swipe through instructions
+
 class WelcomeVC: UIViewController {
 
     let welcomeView = WelcomeInstructionsView()
+    
     let nextButton: UIButton = {
         let nb = UIButton(type: .custom)
         nb.setTitle("Next", for: .normal)
@@ -24,19 +28,15 @@ class WelcomeVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
     }
 
     @objc func nextButtonPressed(){
         navigationController?.pushViewController(MainVC(), animated: true)
-        print("Hey gurl")
+        print("NextButtonPressed")
     }
-    
-
 }
 
-
+//MARK: LoadView Extenstion and Constraints
 extension WelcomeVC {
     override func loadView() {
         view = UIView()
@@ -57,7 +57,5 @@ extension WelcomeVC {
             nextButton.centerXAnchor.constraint(equalTo: welcomeView.centerXAnchor),
 
         ])
-
-
     }
 }

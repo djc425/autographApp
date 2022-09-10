@@ -3,15 +3,14 @@
 //  AutographApp
 //
 //  Created by David Chester on 7/21/22.
-//
+
 
 import UIKit
 
-
-
+// This is the pop up that the autograph is drawn on once a photo is taken.
 class SignatureScreen: UIViewController {
 
-    // properties of the signature to be drawn
+    // MARK: Properties of the signature to be drawn
     var lastPoint = CGPoint.zero
     var inkColor = UIColor.black
     var brushWidth: CGFloat = 10
@@ -19,6 +18,7 @@ class SignatureScreen: UIViewController {
     // we'll use this Bool later to tell when we've lifted our finger
     var swiped = false
 
+    // Image view for where we're showing the signature, think we'll delete this later, but more for a test.
     var signatureImageView: UIImageView = {
         let siv = UIImageView()
         siv.translatesAutoresizingMaskIntoConstraints = false
@@ -26,11 +26,11 @@ class SignatureScreen: UIViewController {
         return siv
     }()
 
+    // another test placeholder to clean up
     var passedImage = UIImage()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
 //    override func viewWillAppear(_ animated: Bool) {
@@ -38,8 +38,6 @@ class SignatureScreen: UIViewController {
 //        let value = UIDeviceOrientation.landscapeLeft.rawValue
 //        UIDevice.current.setValue(value, forKey: "orientation")
 //    }
-
-
 
     // drawing function
     func drawLine(from: CGPoint, to: CGPoint) {

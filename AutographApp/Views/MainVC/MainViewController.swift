@@ -7,8 +7,7 @@
 
 import UIKit
 
-class MainVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
-
+class MainVC: UIViewController, UINavigationControllerDelegate {
 
     let galleryView = GalleryView()
 
@@ -32,6 +31,7 @@ class MainVC: UIViewController, UINavigationControllerDelegate, UIImagePickerCon
         return img
     }()
 
+    //MARK: Buttons set up
     let newPhotoBttn: UIButton = {
         let npb = UIButton(type: .system)
         npb.setTitle("New Photo", for: .normal)
@@ -40,15 +40,16 @@ class MainVC: UIViewController, UINavigationControllerDelegate, UIImagePickerCon
         npb.tintColor = .darkGray
         npb.backgroundColor = .black.withAlphaComponent(0.2)
         npb.layer.cornerRadius = 20
-        npb.addTarget(self, action: #selector(newPhotoPressed), for: .touchUpInside)
+        npb.addTarget(self, action: #selector(newPhotoBttnPressed), for: .touchUpInside)
         npb.translatesAutoresizingMaskIntoConstraints = false
         return npb
     }()
 
+    //TODO: Remove once testing with phyiscal device
     let testViewBttn: UIButton = {
         let tvb = UIButton(type: .system)
         tvb.setTitle("PUSH ME", for: .normal)
-        tvb.addTarget(self, action: #selector(testPressed), for: .touchUpInside)
+        tvb.addTarget(self, action: #selector(testViewBttnPressed), for: .touchUpInside)
         tvb.translatesAutoresizingMaskIntoConstraints = false
         return tvb
     }()
@@ -65,15 +66,14 @@ class MainVC: UIViewController, UINavigationControllerDelegate, UIImagePickerCon
     }
 
     //Push Me Bttn
-    @objc func testPressed(){
-
+    @objc func testViewBttnPressed(){
         signatureView.modalTransitionStyle = .crossDissolve
         signatureView.modalPresentationStyle = .overCurrentContext
 
         present(signatureView, animated: true)
     }
 
-    @objc func newPhotoPressed(){
+    @objc func newPhotoBttnPressed(){
         let picker = UIImagePickerController()
         picker.sourceType = .photoLibrary
         picker.allowsEditing = false
@@ -94,12 +94,12 @@ class MainVC: UIViewController, UINavigationControllerDelegate, UIImagePickerCon
     }
 }
 
-// MARK: collectionView Methods
-extension MainVC {
+// MARK: UICollectionView Methods
+extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("number")
-        return 5
+        return 2
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -114,7 +114,7 @@ extension MainVC {
 }
 
 // MARK: image picker methods
-extension MainVC {
+extension MainVC: UIImagePickerControllerDelegate {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
@@ -129,7 +129,7 @@ extension MainVC {
 }
 
 
-// MARK: load view
+// MARK: Load View Extension w/Constraints
 extension MainVC {
 
     override func loadView() {
@@ -154,7 +154,6 @@ extension MainVC {
             galleryView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
             galleryView.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
             galleryView.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
-
 
             newPhotoBttn.topAnchor.constraint(equalTo: galleryView.bottomAnchor, constant: 20),
             newPhotoBttn.centerXAnchor.constraint(equalTo: galleryView.centerXAnchor),

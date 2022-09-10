@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Want this to be a horizontal scrolling gallery of collection view cells that take up most of the box
 class GalleryView: UIView {
 
     let autographCollection: UICollectionView = {
@@ -52,21 +53,31 @@ class AutographCell: UICollectionViewCell {
 
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
-      configure()
+
+      configureCell()
 
     }
+
+    let testLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Testing"
+        return lbl
+    }()
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(){
+    func configureCell(){
+        let contentView = contentView
         self.backgroundColor = .systemRed
+        self.contentView.addSubview(testLabel)
 
-        NSLayoutConstraint.activate([
-            self.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            self.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5),
-            self.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5)
+
+       NSLayoutConstraint.activate([
+            testLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            testLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5),
+            testLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5)
         ])
     }
 }

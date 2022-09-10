@@ -11,7 +11,7 @@ class WelcomeInstructionsView: UIView {
 
     lazy var titleLabel: UILabel = {
         let lbl = UILabel.welcomeLabel()
-        lbl.text = "Welcome to Autograph"
+      //  lbl.text = "Welcome to Autograph"
         return lbl
     }()
 
