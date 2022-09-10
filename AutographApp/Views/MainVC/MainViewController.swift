@@ -9,9 +9,8 @@ import UIKit
 
 class MainVC: UIViewController, UINavigationControllerDelegate {
 
+    // the view which holds the tableViewGallery
     let tableViewGallery = GalleryViewTableView()
-
-    let autographCellArray = [AutographCell]()
 
     let signatureView = SignatureScreen()
 
@@ -61,6 +60,7 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
 
         tableViewGallery.tableViewGallery.delegate = self
         tableViewGallery.tableViewGallery.dataSource = self
+        tableViewGallery.tableViewGallery.register(AutographTableViewCell.self, forCellReuseIdentifier: AutographTableViewCell.identifier)
 
         //self.navigationItem.setHidesBackButton(true, animated: false)
     }
@@ -88,41 +88,41 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
              self.signatureView.passedImage = image
         })
     }
+
+    // making a variable to hold an array of TableViewCell models to test with
+    private let tableViewCellViewModels: [AutographTableCellViewModel] = [
+        AutographTableCellViewModel(autographTableCellViewModels: [
+            AutographCollectionCellViewModel(name: "", backgroundColor: .systemGreen),
+            AutographCollectionCellViewModel(name: "", backgroundColor: .systemBlue),
+            AutographCollectionCellViewModel(name: "", backgroundColor: .red)
+        ])
+    ]
 }
 
 //MARK: tableView methods
 extension MainVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return tableViewCellViewModels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "photo"
-
-        return cell
-    }
-
-
-}
-
-// MARK: UICollectionView Methods
-/*extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("number")
-        return 2
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AutographCell.identifier, for: indexPath) as? UICollectionViewCell else {
-            return UICollectionViewCell()
+        // the viewModel to be displayed will be pulled from our array of tableViewCellViewModels
+        let viewModel = tableViewCellViewModels[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AutographTableViewCell.identifier, for: indexPath) as? AutographTableViewCell else {
+            fatalError()
         }
-        print("collection")
+
+        // we configure the properties of the cell based on the viewmodel
+        cell.configure(with: viewModel)
         return cell
     }
+
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//
+//    }
+
+
 }
-*/
 
 // MARK: image picker methods
 extension MainVC: UIImagePickerControllerDelegate {
@@ -162,10 +162,10 @@ extension MainVC {
             imageTaken.widthAnchor.constraint(equalToConstant: 150),
             imageTaken.heightAnchor.constraint(equalToConstant: 150),
 
-           tableViewGallery.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-           tableViewGallery.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
-           tableViewGallery.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
-           tableViewGallery.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
+            tableViewGallery.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            tableViewGallery.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
+            tableViewGallery.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
+            tableViewGallery.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
 
             newPhotoBttn.topAnchor.constraint(equalTo: tableViewGallery.bottomAnchor, constant: 20),
             newPhotoBttn.centerXAnchor.constraint(equalTo: tableViewGallery.centerXAnchor),
