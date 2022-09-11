@@ -13,9 +13,15 @@ struct AutographTableCellViewModel {
     let autographTableCellViewModels: [AutographCollectionCellViewModel]
 }
 
-class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+protocol AutographTableViewCellDelegate: AnyObject {
+    func autographTableViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel)
+}
+
+class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     static let identifier = "AutographTableViewCell"
+
+    var delegate: AutographTableViewCellDelegate?
 
     // create an array of CollectionViewCellViewModels
     private var autographCollectionCellViewModels: [AutographCollectionCellViewModel] = []
@@ -24,7 +30,7 @@ class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColle
     private let autographCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: layout)
@@ -78,6 +84,17 @@ class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColle
         self.autographCollectionCellViewModels = viewModel.autographTableCellViewModels
         //reload the data so the collectionView refreshes and displays
         autographCollectionView.reloadData()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width: CGFloat = contentView.frame.size.width / 2
+        return CGSize(width: width, height: width)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let viewModelOfCollectionViewToBeTapped = autographCollectionCellViewModels[indexPath.row]
+        delegate?.autographTableViewCellDidTapItem(with: viewModelOfCollectionViewToBeTapped)
     }
 
 }

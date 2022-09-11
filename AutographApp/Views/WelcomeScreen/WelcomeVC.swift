@@ -55,7 +55,6 @@ extension WelcomeVC {
             nextButton.widthAnchor.constraint(equalTo: welcomeView.widthAnchor, multiplier: 0.8),
             nextButton.heightAnchor.constraint(equalTo: welcomeView.heightAnchor, multiplier: 0.15),
             nextButton.centerXAnchor.constraint(equalTo: welcomeView.centerXAnchor),
-
         ])
     }
 }

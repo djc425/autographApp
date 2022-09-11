@@ -61,10 +61,10 @@ extension UILabel {
         lbl.textColor = .white
         lbl.textAlignment = .center
         lbl.shadowColor = UIColor.black
-        lbl.layer.shadowRadius = 2.0
+        lbl.layer.shadowRadius = 4.0
         lbl.layer.shadowOpacity = 0.1
         lbl.layer.masksToBounds = false
-        lbl.layer.shadowOffset = CGSize(width: 0, height: 2)
+        lbl.layer.shadowOffset = CGSize(width: 1, height: 2)
         return lbl
     }
 }

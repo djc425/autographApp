@@ -1,11 +1,13 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  AutographApp
 //
 //  Created by David Chester on 7/11/22.
 //
 
 import UIKit
+
+//TODO: to begin with lets just automatically apply the signature to the bottom of the photo, in a future version we'll let users move it around. But right now once the signautre is done it'll be attached to the lower part of the photo. 
 
 class MainVC: UIViewController, UINavigationControllerDelegate {
 
@@ -89,12 +91,12 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
         })
     }
 
-    // making a variable to hold an array of TableViewCell models to test with
+//     making a variable to hold an array of TableViewCell models to test with
     private let tableViewCellViewModels: [AutographTableCellViewModel] = [
         AutographTableCellViewModel(autographTableCellViewModels: [
-            AutographCollectionCellViewModel(name: "", backgroundColor: .systemGreen),
-            AutographCollectionCellViewModel(name: "", backgroundColor: .systemBlue),
-            AutographCollectionCellViewModel(name: "", backgroundColor: .red)
+            AutographCollectionCellViewModel(name: "Cake", backgroundColor: .systemGreen),
+            AutographCollectionCellViewModel(name: "Cheese", backgroundColor: .systemBlue),
+            AutographCollectionCellViewModel(name: "Eggs", backgroundColor: .red)
         ])
     ]
 }
@@ -114,14 +116,25 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 
         // we configure the properties of the cell based on the viewmodel
         cell.configure(with: viewModel)
+        cell.delegate = self
         return cell
     }
 
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//
-//    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableViewGallery.tableViewGallery.frame.size.height 
+    }
 
 
+}
+
+extension MainVC: AutographTableViewCellDelegate {
+    func autographTableViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel) {
+        //Placeholder Alert
+        let alert = UIAlertController(title: viewModel.name, message: "YEA BOI", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+
+        present(alert, animated: true)
+    }
 }
 
 // MARK: image picker methods

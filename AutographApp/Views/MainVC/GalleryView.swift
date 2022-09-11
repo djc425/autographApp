@@ -14,7 +14,9 @@ class GalleryViewTableView: UIView {
         tableViewGallery.translatesAutoresizingMaskIntoConstraints = false
        // register the tableView's cell with an AutographTableViewCell
         tableViewGallery.register(AutographTableViewCell.self, forCellReuseIdentifier: AutographTableViewCell.identifier)
-
+        tableViewGallery.isScrollEnabled = false
+        // remove the default separator between cells
+        tableViewGallery.separatorStyle = .none
         return tableViewGallery
     }()
 
