@@ -40,5 +40,5 @@ class GalleryViewTableView: UIView {
         self.layer.cornerRadius = 20
         self.addSubview(tableViewGallery)
     }
-
 }
+

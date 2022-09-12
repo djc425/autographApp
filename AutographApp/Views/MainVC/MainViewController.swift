@@ -7,7 +7,9 @@
 
 import UIKit
 
-//TODO: to begin with lets just automatically apply the signature to the bottom of the photo, in a future version we'll let users move it around. But right now once the signautre is done it'll be attached to the lower part of the photo. 
+//TODO: to begin with lets just automatically apply the signature to the bottom of the photo, in a future version we'll let users move it around. But right now once the signautre is done it'll be attached to the lower part of the photo.
+// - Look at image picker to put a method in there
+// - look at addSignature method to combine images and then add the date as a string
 
 class MainVC: UIViewController, UINavigationControllerDelegate {
 
@@ -94,22 +96,23 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
 //     making a variable to hold an array of TableViewCell models to test with
     private let tableViewCellViewModels: [AutographTableCellViewModel] = [
         AutographTableCellViewModel(autographTableCellViewModels: [
-            AutographCollectionCellViewModel(name: "Cake", backgroundColor: .systemGreen),
-            AutographCollectionCellViewModel(name: "Cheese", backgroundColor: .systemBlue),
-            AutographCollectionCellViewModel(name: "Eggs", backgroundColor: .red)
+            AutographCollectionCellViewModel(takenImage: UIImage(systemName: "photo.fill")!, autographImage: UIImage(systemName: "scribble.variable")!, date: "DATE TEST"),
+            AutographCollectionCellViewModel(takenImage: UIImage(systemName: "photo.fill")!, autographImage: UIImage(systemName: "scribble.variable")!, date: "9/12/2022"),
+            AutographCollectionCellViewModel(takenImage: UIImage(systemName: "photo.fill")!, autographImage: UIImage(systemName: "scribble.variable")!, date: "9/13/2022"),
         ])
     ]
+    
 }
 
 //MARK: tableView methods
-extension MainVC: UITableViewDelegate, UITableViewDataSource {
+ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableViewCellViewModels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // the viewModel to be displayed will be pulled from our array of tableViewCellViewModels
-        let viewModel = tableViewCellViewModels[indexPath.row]
+       let viewModel = tableViewCellViewModels[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AutographTableViewCell.identifier, for: indexPath) as? AutographTableViewCell else {
             fatalError()
         }
@@ -130,7 +133,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 extension MainVC: AutographTableViewCellDelegate {
     func autographTableViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel) {
         //Placeholder Alert
-        let alert = UIAlertController(title: viewModel.name, message: "YEA BOI", preferredStyle: .alert)
+        let alert = UIAlertController(title: viewModel.date, message: "YEA BOI", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
 
         present(alert, animated: true)
@@ -143,11 +146,12 @@ extension MainVC: UIImagePickerControllerDelegate {
         picker.dismiss(animated: true, completion: nil)
     }
 
+    // TODO: Here we want to capture the chosen image and save it to our ViewModel
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-
-       addSignature(putOn: image)
+        self.imageTaken.image = image
+      // addSignature(putOn: image)
     }
 }
 

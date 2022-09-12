@@ -13,6 +13,3 @@ struct Autograph {
     var autograph: UIImage
 }
 
-struct CollectionViewModel {
-    
-}

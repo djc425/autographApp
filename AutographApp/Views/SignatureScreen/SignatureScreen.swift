@@ -18,6 +18,8 @@ class SignatureScreen: UIViewController {
     //Use this Bool later to tell when we've lifted our finger
     var swiped = false
 
+   // let mainVC = MainVC()
+
     //Image view for where we're showing the signature, think we'll delete this later, but more for a test.
     var signatureImageView: UIImageView = {
         let siv = UIImageView()
@@ -67,6 +69,7 @@ class SignatureScreen: UIViewController {
         return currentDate.formatted(date: .complete, time: .omitted).description
     }
 
+    //Building an Autograph object
     func buildAutograph(image: UIImage, autograph: UIImage) -> Autograph {
         let autograph = Autograph(date: getDate(), image: image, autograph: autograph)
         return autograph
@@ -102,7 +105,7 @@ extension SignatureScreen {
         dump(buildAutograph(image: passedImage, autograph: finalAutograph))
 
         // once we're done drawing the signature the view dismisses itself
-        self.dismiss(animated: true)
+        self.dismiss(animated: true, completion: nil)
         signatureImageView.image = nil
     }
 }
@@ -121,7 +124,6 @@ extension SignatureScreen {
             signatureImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             signatureImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
         ])
-
     }
 }
 

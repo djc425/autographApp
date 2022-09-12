@@ -11,11 +11,9 @@ import UIKit
 
 // create a viewModel for our CollectionViewCell which will hold the properties to be displayed
 struct AutographCollectionCellViewModel {
-//    let finalImage: UIImage
-//    let date: String
-
-    let name: String
-    let backgroundColor: UIColor
+    let takenImage: UIImage
+    let autographImage: UIImage
+    let date: String
 }
 
 //TODO: Customize further
@@ -23,25 +21,36 @@ class AutographCollectionViewCell: UICollectionViewCell {
 
     static let identifer = "AutographCollectionViewCell"
 
-    let testLabel: UILabel = {
+    let dateLabel: UILabel = {
         let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.font = .systemFont(ofSize: 20)
-        lbl.layer.zPosition = 1
+        lbl.textAlignment = .right
+        lbl.font = .systemFont(ofSize: 14)
+        lbl.layer.zPosition = 2
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
 
-    let imageView: UIImageView = {
+    let takenImageView: UIImageView = {
+        let imgView = UIImageView()
+        //imgView.backgroundColor = .red
+        imgView.layer.zPosition = 0
+        //imgView.image = UIImage(systemName: "photo.artframe")
+        imgView.clipsToBounds = true
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        return imgView
+    }()
+
+    let autographImageView: UIImageView = {
         let imgView = UIImageView()
        // imgView.backgroundColor = .red
-        imgView.layer.zPosition = -1
-        imgView.image = UIImage(systemName: "photo.artframe")
+        imgView.layer.zPosition = 1
+        //imgView.image = UIImage(systemName: "scribble.variable")
         imgView.clipsToBounds = true
 
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
+
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,30 +63,39 @@ class AutographCollectionViewCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        //testLabel.frame = contentView.bounds
     }
 
     func configureCollectionViewCell(with viewModel: AutographCollectionCellViewModel) {
-        contentView.backgroundColor = viewModel.backgroundColor
-        testLabel.text = viewModel.name
+       takenImageView.image = viewModel.takenImage
+        dateLabel.text = viewModel.date
+        autographImageView.image = viewModel.autographImage
     }
 
     func configureProperties(){
         contentView.layer.cornerRadius = 10
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.secondaryLabel.cgColor
-        contentView.addSubview(testLabel)
-        contentView.addSubview(imageView)
+        contentView.addSubview(autographImageView)
+        contentView.addSubview(takenImageView)
+        contentView.addSubview(dateLabel)
 
         NSLayoutConstraint.activate([
-            testLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            testLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            autographImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            autographImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            autographImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            autographImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            autographImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.2),
 
-            imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            takenImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            takenImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            takenImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            takenImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            takenImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+
+            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
     }
 
