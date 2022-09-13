@@ -81,7 +81,7 @@ class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColle
 
     // we pass the array of CollectionViewCellModels from our struct above into the array within this TableViewcell that will then populate it
     func configure(with viewModel: AutographTableCellViewModel) {
-        self.autographCollectionCellViewModels = viewModel.autographTableCellViewModels
+        self.autographCollectionCellViewModels = viewModel
         //reload the data so the collectionView refreshes and displays
         autographCollectionView.reloadData()
     }

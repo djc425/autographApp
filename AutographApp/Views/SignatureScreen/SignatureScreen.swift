@@ -10,6 +10,8 @@ import UIKit
 // This is the pop up that the autograph is drawn on once a photo is taken.
 class SignatureScreen: UIViewController {
 
+    let tableViewGallery = GalleryViewTableView()
+
     // MARK: Properties of the signature to be drawn
     var lastPoint = CGPoint.zero
     var inkColor = UIColor.black
@@ -70,8 +72,9 @@ class SignatureScreen: UIViewController {
     }
 
     //Building an Autograph object
-    func buildAutograph(image: UIImage, autograph: UIImage) -> Autograph {
-        let autograph = Autograph(date: getDate(), image: image, autograph: autograph)
+    func buildAutograph(passedImage: UIImage, autograph: UIImage) -> Autograph {
+        let autograph = Autograph(date: getDate(), image: passedImage, autograph: autograph)
+
         return autograph
     }
 }
@@ -102,8 +105,16 @@ extension SignatureScreen {
         }
 
         guard let finalAutograph = signatureImageView.image else { return }
-        dump(buildAutograph(image: passedImage, autograph: finalAutograph))
+        let newEntry = buildAutograph(passedImage: passedImage, autograph: finalAutograph)
 
+        
+
+        let newAutographCell = AutographCollectionCellViewModel(takenImage: newEntry.image, autographImage: newEntry.autograph, date: newEntry.date)
+
+            
+        
+
+        tableViewGallery.tableViewGallery.reloadData()
         // once we're done drawing the signature the view dismisses itself
         self.dismiss(animated: true, completion: nil)
         signatureImageView.image = nil

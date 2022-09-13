@@ -94,25 +94,22 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
     }
 
 //     making a variable to hold an array of TableViewCell models to test with
-    private let tableViewCellViewModels: [AutographTableCellViewModel] = [
-        AutographTableCellViewModel(autographTableCellViewModels: [
-            AutographCollectionCellViewModel(takenImage: UIImage(systemName: "photo.fill")!, autographImage: UIImage(systemName: "scribble.variable")!, date: "DATE TEST"),
-            AutographCollectionCellViewModel(takenImage: UIImage(systemName: "photo.fill")!, autographImage: UIImage(systemName: "scribble.variable")!, date: "9/12/2022"),
-            AutographCollectionCellViewModel(takenImage: UIImage(systemName: "photo.fill")!, autographImage: UIImage(systemName: "scribble.variable")!, date: "9/13/2022"),
-        ])
-    ]
+   // let tableViewCellViewModels: AutographTableCellViewModel
+    let tableViewCellViewModels: AutographTableCellViewModel = [AutographTableCellViewModel(autographTableCellViewModels: [AutographCollectionCellViewModel(takenImage: <#T##UIImage#>, autographImage: <#T##UIImage#>, date: <#T##String#>)])]
     
 }
 
 //MARK: tableView methods
  extension MainVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewCellViewModels.count
+
+        return tableViewCellViewModels.autographTableCellViewModels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // the viewModel to be displayed will be pulled from our array of tableViewCellViewModels
-       let viewModel = tableViewCellViewModels[indexPath.row]
+        //let viewModel = tableViewCellViewModels.[indexPath.row]
+        let viewModel = tableViewCellViewModels.autographTableCellViewModels[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AutographTableViewCell.identifier, for: indexPath) as? AutographTableViewCell else {
             fatalError()
         }
@@ -151,7 +148,7 @@ extension MainVC: UIImagePickerControllerDelegate {
         picker.dismiss(animated: true, completion: nil)
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
         self.imageTaken.image = image
-      // addSignature(putOn: image)
+        addSignature(putOn: image)
     }
 }
 

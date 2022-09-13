@@ -24,27 +24,26 @@ class AutographCollectionViewCell: UICollectionViewCell {
     let dateLabel: UILabel = {
         let lbl = UILabel()
         lbl.textAlignment = .right
-        lbl.font = .systemFont(ofSize: 14)
+        lbl.font = .systemFont(ofSize: 11)
+        lbl.textColor = .darkGray
         lbl.layer.zPosition = 2
+
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
 
     let takenImageView: UIImageView = {
         let imgView = UIImageView()
-        //imgView.backgroundColor = .red
         imgView.layer.zPosition = 0
-        //imgView.image = UIImage(systemName: "photo.artframe")
         imgView.clipsToBounds = true
+
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
 
     let autographImageView: UIImageView = {
         let imgView = UIImageView()
-       // imgView.backgroundColor = .red
         imgView.layer.zPosition = 1
-        //imgView.image = UIImage(systemName: "scribble.variable")
         imgView.clipsToBounds = true
 
         imgView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +65,7 @@ class AutographCollectionViewCell: UICollectionViewCell {
     }
 
     func configureCollectionViewCell(with viewModel: AutographCollectionCellViewModel) {
-       takenImageView.image = viewModel.takenImage
+        takenImageView.image = viewModel.takenImage
         dateLabel.text = viewModel.date
         autographImageView.image = viewModel.autographImage
     }
