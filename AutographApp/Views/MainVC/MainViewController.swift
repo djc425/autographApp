@@ -7,14 +7,10 @@
 
 import UIKit
 
-//TODO: to begin with lets just automatically apply the signature to the bottom of the photo, in a future version we'll let users move it around. But right now once the signautre is done it'll be attached to the lower part of the photo.
-// - Look at image picker to put a method in there
-// - look at addSignature method to combine images and then add the date as a string
-
 class MainVC: UIViewController, UINavigationControllerDelegate {
 
     // the view which holds the tableViewGallery
-    let tableViewGallery = GalleryUICollectionView()
+    let collectionViewGallery = GalleryUICollectionView()
 
     let signatureView = SignatureScreen()
 
@@ -23,12 +19,13 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
     var coreData = CoreDataManager()
 
     //     making a variable to hold an array of TableViewCell models to test with
-       // let tableViewCellViewModels: AutographTableCellViewModel
-    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = [
-        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.circle")!, autograph: UIImage(systemName: "scribble")!)),
-        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!)),
-        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!))
-    ]
+//    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = [
+//        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.circle")!, autograph: UIImage(systemName: "scribble")!)),
+//        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!)),
+//        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!))
+//    ]
+
+    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = []
 
     var signatureImg: UIImage! {
         didSet {
@@ -74,22 +71,15 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
         super.viewDidLoad()
         title =  "Gallery"
 
-        tableViewGallery.tableViewGallery.delegate = self
-        tableViewGallery.tableViewGallery.dataSource = self
+        collectionViewGallery.tableViewGallery.delegate = self
+        collectionViewGallery.tableViewGallery.dataSource = self
 
+     //   coreData.getAutographs()
 
         //self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
-   /* func retreive() {
-        let collectionCellArray = coreData.getAutographs()!
 
-        let tableViewArray: AutographTableCellViewModel!
-        for collectionCellArray in collectionCellArray {
-            tableViewArray.autographTableCellViewModels.append(collectionCellArray)
-        }
-
-    } */
 
     @objc func newPhotoBttnPressed(){
         let picker = UIImagePickerController()
@@ -125,7 +115,7 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 
         // we configure the properties of the cell based on the viewmodel
         cell.configureCollectionViewCell(with: viewModel)
-        cell.delegate = self
+       // cell.delegate = self
         return cell
     }
 
@@ -140,11 +130,11 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         print("Item selected \(indexPath.row)")
         let viewModelOfCollectionViewToBeTapped = collectionViewCellViewModels[indexPath.row]
         signatureImg = viewModelOfCollectionViewToBeTapped.takenImage
-        cellDelegeate?.autographCollectionViewCellDidTapItem(with: viewModelOfCollectionViewToBeTapped)
+       // autographCollectionViewCellDidTapItem(with: viewModelOfCollectionViewToBeTapped)
         }
 }
 
-extension MainVC: AutographCollectionViewCellDelegate {
+extension MainVC {
     func autographCollectionViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel) {
         //Placeholder Alert
         let alert = UIAlertController(title: viewModel.date, message: "YEA BOI", preferredStyle: .alert)
@@ -175,9 +165,9 @@ extension MainVC {
 
     override func loadView() {
         view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .purple.withAlphaComponent(70)
         view.addSubview(imageTaken)
-        view.addSubview(tableViewGallery)
+        view.addSubview(collectionViewGallery)
         view.addSubview(newPhotoBttn)
 
         NSLayoutConstraint.activate([
@@ -187,15 +177,15 @@ extension MainVC {
             imageTaken.widthAnchor.constraint(equalToConstant: 150),
             imageTaken.heightAnchor.constraint(equalToConstant: 150),
 
-            tableViewGallery.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tableViewGallery.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
-            tableViewGallery.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
-            tableViewGallery.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
+            collectionViewGallery.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            collectionViewGallery.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
+            collectionViewGallery.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.9),
+            collectionViewGallery.heightAnchor.constraint(equalTo: view.layoutMarginsGuide.heightAnchor, multiplier: 0.3),
 
-            newPhotoBttn.topAnchor.constraint(equalTo: tableViewGallery.bottomAnchor, constant: 20),
-            newPhotoBttn.centerXAnchor.constraint(equalTo: tableViewGallery.centerXAnchor),
-            newPhotoBttn.widthAnchor.constraint(equalTo: tableViewGallery.widthAnchor, multiplier: 0.4),
-            newPhotoBttn.heightAnchor.constraint(equalTo: tableViewGallery.heightAnchor, multiplier: 0.2)
+            newPhotoBttn.topAnchor.constraint(equalTo: collectionViewGallery.bottomAnchor, constant: 20),
+            newPhotoBttn.centerXAnchor.constraint(equalTo: collectionViewGallery.centerXAnchor),
+            newPhotoBttn.widthAnchor.constraint(equalTo: collectionViewGallery.widthAnchor, multiplier: 0.4),
+            newPhotoBttn.heightAnchor.constraint(equalTo: collectionViewGallery.heightAnchor, multiplier: 0.2)
         ])
     }
 }

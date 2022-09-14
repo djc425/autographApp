@@ -17,11 +17,14 @@ enum CoreDataManagerErrors: Error {
 
 struct CoreDataManager {
 
+    let collectionView = GalleryUICollectionView()
+
+    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = []
+
    // var loadedAutographs: [Autograph]
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-    mutating func getAutographs() -> [AutographCollectionCellViewModel]? {
-        var loadedAutographs = [AutographCollectionCellViewModel]()
+    mutating func getAutographs() {
         do {
             let autographs = try context.fetch(AutographWithSignature.fetchRequest())
             for autograph in autographs {
@@ -29,15 +32,15 @@ struct CoreDataManager {
                     let retrievedAutograph = Autograph(date: retrievedDate, image: UIImage(data: retrievedImage)!, autograph: UIImage(data: retrievedAutograph)!)
 
                     let autographforCell = AutographCollectionCellViewModel(with: retrievedAutograph)
+                    
+                   collectionViewCellViewModels.append(autographforCell)
 
-                    loadedAutographs.append(autographforCell)
                 }
             }
         } catch {
             print(CoreDataManagerErrors.couldNotdelete.localizedDescription)
-            return nil
         }
-        return loadedAutographs
+
     }
 
     func createAutograph(with autograph: Autograph) {

@@ -13,9 +13,4 @@ struct Autograph {
     var autograph: UIImage
 }
 
-struct AutographManager {
-
-    
-
-}
 

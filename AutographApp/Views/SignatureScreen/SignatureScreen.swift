@@ -10,11 +10,11 @@ import UIKit
 // This is the pop up that the autograph is drawn on once a photo is taken.
 class SignatureScreen: UIViewController {
 
-    let tableViewGallery = GalleryViewTableView()
+    let collectionViewGallery = GalleryUICollectionView()
 
     //var autographCollectionViewCellModel = [AutographCollectionCellViewModel]()
 
-    let coreDataManager = CoreDataManager()
+    var coreDataManager = CoreDataManager()
 
     // MARK: Properties of the signature to be drawn
     var lastPoint = CGPoint.zero
@@ -23,8 +23,6 @@ class SignatureScreen: UIViewController {
     var opacity: CGFloat = 1.0
     //Use this Bool later to tell when we've lifted our finger
     var swiped = false
-
-   // let mainVC = MainVC()
 
     //Image view for where we're showing the signature, think we'll delete this later, but more for a test.
     var signatureImageView: UIImageView = {
@@ -116,8 +114,11 @@ extension SignatureScreen {
        // let newAutograph = AutographCollectionCellViewModel(with: generatedAutograph)
 
         coreDataManager.createAutograph(with: generatedAutograph)
-        
-        tableViewGallery.tableViewGallery.reloadData()
+        coreDataManager.getAutographs()
+
+        DispatchQueue.main.async {
+            self.collectionViewGallery.tableViewGallery.reloadData()
+        }
         // once we're done drawing the signature the view dismisses itself
         self.dismiss(animated: true, completion: nil)
         signatureImageView.image = nil
