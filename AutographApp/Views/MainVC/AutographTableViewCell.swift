@@ -7,10 +7,10 @@
 
 import UIKit
 
-
+//TODO: Remove the whole thang and just use a collection view
 struct AutographTableCellViewModel {
     // we set our TableViewCellModels to be an array of autographCollectionViewCellModel's
-    let autographTableCellViewModels: [AutographCollectionCellViewModel]
+    var autographTableCellViewModels: [AutographCollectionCellViewModel]
 }
 
 protocol AutographTableViewCellDelegate: AnyObject {
@@ -46,8 +46,6 @@ class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColle
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(autographCollectionView)
 
-        contentView.backgroundColor = .systemGreen
-
         autographCollectionView.delegate = self
         autographCollectionView.dataSource = self
     }
@@ -81,7 +79,7 @@ class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColle
 
     // we pass the array of CollectionViewCellModels from our struct above into the array within this TableViewcell that will then populate it
     func configure(with viewModel: AutographTableCellViewModel) {
-        self.autographCollectionCellViewModels = viewModel
+        self.autographCollectionCellViewModels = viewModel.autographTableCellViewModels
         //reload the data so the collectionView refreshes and displays
         autographCollectionView.reloadData()
     }

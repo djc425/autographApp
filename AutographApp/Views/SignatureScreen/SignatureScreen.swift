@@ -12,6 +12,10 @@ class SignatureScreen: UIViewController {
 
     let tableViewGallery = GalleryViewTableView()
 
+    //var autographCollectionViewCellModel = [AutographCollectionCellViewModel]()
+
+    let coreDataManager = CoreDataManager()
+
     // MARK: Properties of the signature to be drawn
     var lastPoint = CGPoint.zero
     var inkColor = UIColor.black
@@ -68,7 +72,7 @@ class SignatureScreen: UIViewController {
     //MARK: Get current date
     func getDate() -> String {
        let currentDate = Date()
-        return currentDate.formatted(date: .complete, time: .omitted).description
+        return currentDate.formatted(date: .abbreviated, time: .omitted).description
     }
 
     //Building an Autograph object
@@ -107,13 +111,12 @@ extension SignatureScreen {
         guard let finalAutograph = signatureImageView.image else { return }
         let newEntry = buildAutograph(passedImage: passedImage, autograph: finalAutograph)
 
+        let generatedAutograph = Autograph(date: newEntry.date, image: newEntry.image, autograph: newEntry.autograph)
+
+       // let newAutograph = AutographCollectionCellViewModel(with: generatedAutograph)
+
+        coreDataManager.createAutograph(with: generatedAutograph)
         
-
-        let newAutographCell = AutographCollectionCellViewModel(takenImage: newEntry.image, autographImage: newEntry.autograph, date: newEntry.date)
-
-            
-        
-
         tableViewGallery.tableViewGallery.reloadData()
         // once we're done drawing the signature the view dismisses itself
         self.dismiss(animated: true, completion: nil)

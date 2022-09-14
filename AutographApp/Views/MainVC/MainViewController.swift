@@ -14,9 +14,21 @@ import UIKit
 class MainVC: UIViewController, UINavigationControllerDelegate {
 
     // the view which holds the tableViewGallery
-    let tableViewGallery = GalleryViewTableView()
+    let tableViewGallery = GalleryUICollectionView()
 
     let signatureView = SignatureScreen()
+
+    var cellDelegeate: AutographCollectionViewCellDelegate?
+
+    var coreData = CoreDataManager()
+
+    //     making a variable to hold an array of TableViewCell models to test with
+       // let tableViewCellViewModels: AutographTableCellViewModel
+    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = [
+        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.circle")!, autograph: UIImage(systemName: "scribble")!)),
+        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!)),
+        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!))
+    ]
 
     var signatureImg: UIImage! {
         didSet {
@@ -49,13 +61,13 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
     }()
 
     //TODO: Remove once testing with phyiscal device
-    let testViewBttn: UIButton = {
-        let tvb = UIButton(type: .system)
-        tvb.setTitle("PUSH ME", for: .normal)
-        tvb.addTarget(self, action: #selector(testViewBttnPressed), for: .touchUpInside)
-        tvb.translatesAutoresizingMaskIntoConstraints = false
-        return tvb
-    }()
+//    let testViewBttn: UIButton = {
+//        let tvb = UIButton(type: .system)
+//        tvb.setTitle("PUSH ME", for: .normal)
+//        tvb.addTarget(self, action: #selector(testViewBttnPressed), for: .touchUpInside)
+//        tvb.translatesAutoresizingMaskIntoConstraints = false
+//        return tvb
+//    }()
 
 
     override func viewDidLoad() {
@@ -64,18 +76,20 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
 
         tableViewGallery.tableViewGallery.delegate = self
         tableViewGallery.tableViewGallery.dataSource = self
-        tableViewGallery.tableViewGallery.register(AutographTableViewCell.self, forCellReuseIdentifier: AutographTableViewCell.identifier)
+
 
         //self.navigationItem.setHidesBackButton(true, animated: false)
     }
 
-    //Push Me Bttn
-    @objc func testViewBttnPressed(){
-        signatureView.modalTransitionStyle = .crossDissolve
-        signatureView.modalPresentationStyle = .overCurrentContext
+   /* func retreive() {
+        let collectionCellArray = coreData.getAutographs()!
 
-        present(signatureView, animated: true)
-    }
+        let tableViewArray: AutographTableCellViewModel!
+        for collectionCellArray in collectionCellArray {
+            tableViewArray.autographTableCellViewModels.append(collectionCellArray)
+        }
+
+    } */
 
     @objc func newPhotoBttnPressed(){
         let picker = UIImagePickerController()
@@ -92,43 +106,46 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
              self.signatureView.passedImage = image
         })
     }
-
-//     making a variable to hold an array of TableViewCell models to test with
-   // let tableViewCellViewModels: AutographTableCellViewModel
-    let tableViewCellViewModels: AutographTableCellViewModel = [AutographTableCellViewModel(autographTableCellViewModels: [AutographCollectionCellViewModel(takenImage: <#T##UIImage#>, autographImage: <#T##UIImage#>, date: <#T##String#>)])]
     
 }
 
 //MARK: tableView methods
- extension MainVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        return tableViewCellViewModels.autographTableCellViewModels.count
+extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return collectionViewCellViewModels.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // the viewModel to be displayed will be pulled from our array of tableViewCellViewModels
-        //let viewModel = tableViewCellViewModels.[indexPath.row]
-        let viewModel = tableViewCellViewModels.autographTableCellViewModels[indexPath.row]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AutographTableViewCell.identifier, for: indexPath) as? AutographTableViewCell else {
+        let viewModel = collectionViewCellViewModels[indexPath.row]
+
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AutographCollectionViewCell.identifer, for: indexPath) as? AutographCollectionViewCell else {
             fatalError()
         }
 
         // we configure the properties of the cell based on the viewmodel
-        cell.configure(with: viewModel)
+        cell.configureCollectionViewCell(with: viewModel)
         cell.delegate = self
         return cell
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableViewGallery.tableViewGallery.frame.size.height 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 150, height: 150)
     }
 
+    //TODO: Having trouble getting the delegate to fire but at least we can have the image be displayed when tapped
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
+        collectionView.deselectItem(at: indexPath, animated: true)
+        print("Item selected \(indexPath.row)")
+        let viewModelOfCollectionViewToBeTapped = collectionViewCellViewModels[indexPath.row]
+        signatureImg = viewModelOfCollectionViewToBeTapped.takenImage
+        cellDelegeate?.autographCollectionViewCellDidTapItem(with: viewModelOfCollectionViewToBeTapped)
+        }
 }
 
-extension MainVC: AutographTableViewCellDelegate {
-    func autographTableViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel) {
+extension MainVC: AutographCollectionViewCellDelegate {
+    func autographCollectionViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel) {
         //Placeholder Alert
         let alert = UIAlertController(title: viewModel.date, message: "YEA BOI", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -159,19 +176,13 @@ extension MainVC {
     override func loadView() {
         view = UIView()
         view.backgroundColor = .white
-        view.addSubview(testViewBttn)
         view.addSubview(imageTaken)
-
         view.addSubview(tableViewGallery)
-
         view.addSubview(newPhotoBttn)
 
         NSLayoutConstraint.activate([
 
-            testViewBttn.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            testViewBttn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            imageTaken.topAnchor.constraint(equalTo: testViewBttn.bottomAnchor, constant: 50),
+            imageTaken.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
             imageTaken.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageTaken.widthAnchor.constraint(equalToConstant: 150),
             imageTaken.heightAnchor.constraint(equalToConstant: 150),

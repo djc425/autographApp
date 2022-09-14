@@ -11,15 +11,28 @@ import UIKit
 
 // create a viewModel for our CollectionViewCell which will hold the properties to be displayed
 struct AutographCollectionCellViewModel {
-    let takenImage: UIImage
-    let autographImage: UIImage
-    let date: String
+
+    var takenImage: UIImage?
+    var autographImage: UIImage?
+    var date: String?
+
+    init(with model: Autograph) {
+        takenImage = model.image
+        autographImage = model.autograph
+        date = model.date
+    }
+}
+
+protocol AutographCollectionViewCellDelegate: AnyObject {
+    func autographCollectionViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel)
 }
 
 //TODO: Customize further
 class AutographCollectionViewCell: UICollectionViewCell {
 
     static let identifer = "AutographCollectionViewCell"
+
+    var delegate: AutographCollectionViewCellDelegate?
 
     let dateLabel: UILabel = {
         let lbl = UILabel()
@@ -36,6 +49,8 @@ class AutographCollectionViewCell: UICollectionViewCell {
         let imgView = UIImageView()
         imgView.layer.zPosition = 0
         imgView.clipsToBounds = true
+        imgView.layer.masksToBounds = true
+        imgView.contentMode = .scaleToFill
 
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
@@ -45,6 +60,8 @@ class AutographCollectionViewCell: UICollectionViewCell {
         let imgView = UIImageView()
         imgView.layer.zPosition = 1
         imgView.clipsToBounds = true
+        imgView.layer.masksToBounds = true
+        imgView.contentMode = .scaleAspectFit
 
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
@@ -64,6 +81,12 @@ class AutographCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
     }
 
+    override func prepareForReuse() {
+        dateLabel.text = nil
+        takenImageView.image = nil
+        autographImageView.image = nil
+    }
+
     func configureCollectionViewCell(with viewModel: AutographCollectionCellViewModel) {
         takenImageView.image = viewModel.takenImage
         dateLabel.text = viewModel.date
@@ -71,6 +94,7 @@ class AutographCollectionViewCell: UICollectionViewCell {
     }
 
     func configureProperties(){
+       // self.isUserInteractionEnabled = false
         contentView.layer.cornerRadius = 10
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.secondaryLabel.cgColor
@@ -79,6 +103,7 @@ class AutographCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(dateLabel)
 
         NSLayoutConstraint.activate([
+
             autographImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             autographImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             autographImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -92,9 +117,9 @@ class AutographCollectionViewCell: UICollectionViewCell {
             takenImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+           // dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
     }
 
