@@ -12,9 +12,9 @@ class SignatureScreen: UIViewController {
 
     let collectionViewGallery = GalleryUICollectionView()
 
-    //var autographCollectionViewCellModel = [AutographCollectionCellViewModel]()
+    let coreDataContext = CoreDataManager()
 
-    var coreDataManager = CoreDataManager()
+    //var autographCollectionViewCellModel = [AutographCollectionCellViewModel]()
 
     // MARK: Properties of the signature to be drawn
     var lastPoint = CGPoint.zero
@@ -113,8 +113,7 @@ extension SignatureScreen {
 
        // let newAutograph = AutographCollectionCellViewModel(with: generatedAutograph)
 
-        coreDataManager.createAutograph(with: generatedAutograph)
-        coreDataManager.getAutographs()
+        createAutograph(with: generatedAutograph)
 
         DispatchQueue.main.async {
             self.collectionViewGallery.tableViewGallery.reloadData()
@@ -122,6 +121,19 @@ extension SignatureScreen {
         // once we're done drawing the signature the view dismisses itself
         self.dismiss(animated: true, completion: nil)
         signatureImageView.image = nil
+    }
+
+    func createAutograph(with autograph: Autograph) {
+        let newAutograph = AutographWithSignature(context: coreDataContext.context)
+        newAutograph.date = autograph.date
+        newAutograph.autograph = autograph.autograph.jpegData(compressionQuality: 80)
+        newAutograph.image = autograph.image.jpegData(compressionQuality: 80)
+
+        do {
+            try coreDataContext.context.save()
+        } catch {
+            print(CoreDataManagerErrors.couldNotSave.localizedDescription)
+        }
     }
 }
 

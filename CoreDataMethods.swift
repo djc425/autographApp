@@ -15,53 +15,55 @@ enum CoreDataManagerErrors: Error {
     case couldNotdelete
 }
 
+protocol CoreDataManagerDelegate {
+    func didUpdateUI(coreDataManager: CoreDataManager, autoGraph: AutographCollectionCellViewModel)
+
+    func didFailWithError(error: Error)
+
+}
+
 struct CoreDataManager {
 
-    let collectionView = GalleryUICollectionView()
+    static let shared = CoreDataManager()
 
-    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = []
+    let collectionVewGallery = GalleryUICollectionView()
 
-   // var loadedAutographs: [Autograph]
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var delegate: CoreDataManagerDelegate?
+    
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-    mutating func getAutographs() {
-        do {
-            let autographs = try context.fetch(AutographWithSignature.fetchRequest())
-            for autograph in autographs {
-                if let retrievedAutograph = autograph.autograph, let retrievedImage = autograph.image, let retrievedDate = autograph.date {
-                    let retrievedAutograph = Autograph(date: retrievedDate, image: UIImage(data: retrievedImage)!, autograph: UIImage(data: retrievedAutograph)!)
+    func getAutographs() {
+       do {
+           let autographs = try context.fetch(AutographWithSignature.fetchRequest())
+           for autograph in autographs {
+               if let retrievedAutograph = autograph.autograph, let retrievedImage = autograph.image, let retrievedDate = autograph.date {
+                   let retrievedAutograph = Autograph(date: retrievedDate, image: UIImage(data: retrievedImage)!, autograph: UIImage(data: retrievedAutograph)!.withHorizontallyFlippedOrientation())
 
-                    let autographforCell = AutographCollectionCellViewModel(with: retrievedAutograph)
-                    
-                   collectionViewCellViewModels.append(autographforCell)
+                   let autographforCell = AutographCollectionCellViewModel(with: retrievedAutograph)
+                   print("\(autographforCell.date) ++")
 
-                }
-            }
-        } catch {
-            print(CoreDataManagerErrors.couldNotdelete.localizedDescription)
-        }
+                   self.delegate?.didUpdateUI(coreDataManager: self, autoGraph: autographforCell)
+                 //  autographModels.append(autographforCell)
 
-    }
+               }
+           }
+       } catch {
+           print(CoreDataManagerErrors.couldNotdelete.localizedDescription)
+       }
 
-    func createAutograph(with autograph: Autograph) {
-        let newAutograph = AutographWithSignature(context: context)
-        newAutograph.date = autograph.date
-        newAutograph.autograph = autograph.autograph.jpegData(compressionQuality: 80)
-        newAutograph.image = autograph.image.jpegData(compressionQuality: 80)
+   }
 
-        do {
-            try context.save()
-        } catch {
-            print(CoreDataManagerErrors.couldNotSave.localizedDescription)
-        }
-    }
+   func deleteAutograph(delete: AutographWithSignature){
 
-    func deleteAutograph(delete: AutographWithSignature){
-        context.delete(delete)
-        do {
-            try context.save()
-        } catch {
-            print(CoreDataManagerErrors.couldNotdelete.localizedDescription)
-        }
-    }
+       context.delete(delete)
+       do {
+           try context.save()
+           DispatchQueue.main.async {
+               self.collectionVewGallery.tableViewGallery.reloadData()
+           }
+       } catch {
+           print(CoreDataManagerErrors.couldNotdelete.localizedDescription)
+       }
+   }
+
 }

@@ -16,16 +16,9 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
 
     var cellDelegeate: AutographCollectionViewCellDelegate?
 
-    var coreData = CoreDataManager()
+    var coreDataManager = CoreDataManager.shared
 
-    //     making a variable to hold an array of TableViewCell models to test with
-//    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = [
-//        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.circle")!, autograph: UIImage(systemName: "scribble")!)),
-//        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!)),
-//        AutographCollectionCellViewModel(with: Autograph(date: "TestDate", image: UIImage(systemName: "photo.fill")!, autograph: UIImage(systemName: "scribble")!))
-//    ]
-
-    var collectionViewCellViewModels: [AutographCollectionCellViewModel] = []
+    var autographModels: [AutographCollectionCellViewModel] = []
 
     var signatureImg: UIImage! {
         didSet {
@@ -73,13 +66,15 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
 
         collectionViewGallery.tableViewGallery.delegate = self
         collectionViewGallery.tableViewGallery.dataSource = self
+        coreDataManager.delegate = self
 
-     //   coreData.getAutographs()
+
+        coreDataManager.getAutographs()
+
+        print(autographModels.count)
 
         //self.navigationItem.setHidesBackButton(true, animated: false)
     }
-
-
 
     @objc func newPhotoBttnPressed(){
         let picker = UIImagePickerController()
@@ -99,15 +94,16 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
     
 }
 
-//MARK: tableView methods
+//MARK: CollectionView methods
 extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionViewCellViewModels.count
+        return autographModels.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // the viewModel to be displayed will be pulled from our array of tableViewCellViewModels
-        let viewModel = collectionViewCellViewModels[indexPath.row]
+        let viewModel = autographModels[indexPath.row]
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AutographCollectionViewCell.identifer, for: indexPath) as? AutographCollectionViewCell else {
             fatalError()
@@ -123,13 +119,15 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         return CGSize(width: 150, height: 150)
     }
 
-    //TODO: Having trouble getting the delegate to fire but at least we can have the image be displayed when tapped
+    //TODO: Having trouble getting the delegate to fire to delete an entry but at least we can have the image be displayed when tapped
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         collectionView.deselectItem(at: indexPath, animated: true)
         print("Item selected \(indexPath.row)")
-        let viewModelOfCollectionViewToBeTapped = collectionViewCellViewModels[indexPath.row]
+
+        let viewModelOfCollectionViewToBeTapped = autographModels[indexPath.row]
         signatureImg = viewModelOfCollectionViewToBeTapped.takenImage
+
        // autographCollectionViewCellDidTapItem(with: viewModelOfCollectionViewToBeTapped)
         }
 }
@@ -139,6 +137,7 @@ extension MainVC {
         //Placeholder Alert
         let alert = UIAlertController(title: viewModel.date, message: "YEA BOI", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+
 
         present(alert, animated: true)
     }
@@ -157,6 +156,22 @@ extension MainVC: UIImagePickerControllerDelegate {
         self.imageTaken.image = image
         addSignature(putOn: image)
     }
+}
+
+extension MainVC: CoreDataManagerDelegate {
+    func didUpdateUI(coreDataManager: CoreDataManager, autoGraph: AutographCollectionCellViewModel) {
+        DispatchQueue.main.async {
+            self.autographModels.append(autoGraph)
+            self.collectionViewGallery.tableViewGallery.reloadData()
+        }
+    }
+
+
+    func didFailWithError(error: Error) {
+        print(error)
+    }
+
+     
 }
 
 

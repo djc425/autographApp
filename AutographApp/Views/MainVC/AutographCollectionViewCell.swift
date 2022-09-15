@@ -30,6 +30,10 @@ protocol AutographCollectionViewCellDelegate: AnyObject {
 //TODO: Customize further
 class AutographCollectionViewCell: UICollectionViewCell {
 
+    func didFailWithError(error: Error) {
+        print(error)
+    }
+
     static let identifer = "AutographCollectionViewCell"
 
     var delegate: AutographCollectionViewCellDelegate?
@@ -86,6 +90,7 @@ class AutographCollectionViewCell: UICollectionViewCell {
         takenImageView.image = nil
         autographImageView.image = nil
     }
+
 
     func configureCollectionViewCell(with viewModel: AutographCollectionCellViewModel) {
         takenImageView.image = viewModel.takenImage
