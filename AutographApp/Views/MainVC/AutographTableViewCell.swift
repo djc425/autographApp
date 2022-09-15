@@ -72,7 +72,7 @@ class AutographTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColle
             fatalError()
         }
         // configure the collectionViewCells with CollectionCellViewModel properties
-        cell.configureCollectionViewCell(with: autographCollectionCellViewModels[indexPath.row])
+  //      cell.configureCollectionViewCell(with: autographCollectionCellViewModels[indexPath.row])
 
         return cell
     }

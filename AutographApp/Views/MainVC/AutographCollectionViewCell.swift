@@ -91,11 +91,11 @@ class AutographCollectionViewCell: UICollectionViewCell {
         autographImageView.image = nil
     }
 
-
-    func configureCollectionViewCell(with viewModel: AutographCollectionCellViewModel) {
-        takenImageView.image = viewModel.takenImage
+    //TODO: Unwrap these safely
+    func configureCollectionViewCell(with viewModel: AutographWithSignature) {
+        takenImageView.image = UIImage(data: viewModel.image!)
         dateLabel.text = viewModel.date
-        autographImageView.image = viewModel.autographImage
+        autographImageView.image = UIImage(data: viewModel.autograph!)
     }
 
     func configureProperties(){
@@ -124,7 +124,6 @@ class AutographCollectionViewCell: UICollectionViewCell {
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-           // dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
     }
 

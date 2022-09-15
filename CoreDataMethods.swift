@@ -16,7 +16,7 @@ enum CoreDataManagerErrors: Error {
 }
 
 protocol CoreDataManagerDelegate {
-    func didUpdateUI(coreDataManager: CoreDataManager, autoGraph: AutographCollectionCellViewModel)
+    func didUpdateUI(coreDataManager: CoreDataManager, autoGraph: AutographWithSignature)
 
     func didFailWithError(error: Error)
 
@@ -36,19 +36,17 @@ struct CoreDataManager {
        do {
            let autographs = try context.fetch(AutographWithSignature.fetchRequest())
            for autograph in autographs {
-               if let retrievedAutograph = autograph.autograph, let retrievedImage = autograph.image, let retrievedDate = autograph.date {
-                   let retrievedAutograph = Autograph(date: retrievedDate, image: UIImage(data: retrievedImage)!, autograph: UIImage(data: retrievedAutograph)!.withHorizontallyFlippedOrientation())
+//               if let retrievedAutograph = autograph.autograph, let retrievedImage = autograph.image, let retrievedDate = autograph.date {
+//                   let retrievedAutograph = Autograph(date: retrievedDate, image: UIImage(data: retrievedImage)!, autograph: UIImage(data: retrievedAutograph)!.withHorizontallyFlippedOrientation())
+//
+//                   let autographforCell = AutographCollectionCellViewModel(with: retrievedAutograph)
+//                   print("\(autographforCell.date) ++")
 
-                   let autographforCell = AutographCollectionCellViewModel(with: retrievedAutograph)
-                   print("\(autographforCell.date) ++")
+                   self.delegate?.didUpdateUI(coreDataManager: self, autoGraph: autograph)
 
-                   self.delegate?.didUpdateUI(coreDataManager: self, autoGraph: autographforCell)
-                 //  autographModels.append(autographforCell)
-
-               }
            }
        } catch {
-           print(CoreDataManagerErrors.couldNotdelete.localizedDescription)
+           print(CoreDataManagerErrors.couldNotLoad.localizedDescription)
        }
 
    }
@@ -60,6 +58,7 @@ struct CoreDataManager {
            try context.save()
            DispatchQueue.main.async {
                self.collectionVewGallery.tableViewGallery.reloadData()
+               self.getAutographs()
            }
        } catch {
            print(CoreDataManagerErrors.couldNotdelete.localizedDescription)

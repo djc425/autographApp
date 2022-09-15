@@ -18,7 +18,7 @@ class MainVC: UIViewController, UINavigationControllerDelegate {
 
     var coreDataManager = CoreDataManager.shared
 
-    var autographModels: [AutographCollectionCellViewModel] = []
+    var autographModels: [AutographWithSignature] = []
 
     var signatureImg: UIImage! {
         didSet {
@@ -126,17 +126,20 @@ extension MainVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         print("Item selected \(indexPath.row)")
 
         let viewModelOfCollectionViewToBeTapped = autographModels[indexPath.row]
-        signatureImg = viewModelOfCollectionViewToBeTapped.takenImage
+        signatureImg = UIImage(data: viewModelOfCollectionViewToBeTapped.image!)
 
-       // autographCollectionViewCellDidTapItem(with: viewModelOfCollectionViewToBeTapped)
+        autographCollectionViewCellDidTapItem(with: viewModelOfCollectionViewToBeTapped)
         }
 }
 
 extension MainVC {
-    func autographCollectionViewCellDidTapItem(with viewModel: AutographCollectionCellViewModel) {
+    func autographCollectionViewCellDidTapItem(with viewModel: AutographWithSignature) {
         //Placeholder Alert
         let alert = UIAlertController(title: viewModel.date, message: "YEA BOI", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+            self.coreDataManager.deleteAutograph(delete: viewModel)
+        }))
 
 
         present(alert, animated: true)
@@ -159,7 +162,7 @@ extension MainVC: UIImagePickerControllerDelegate {
 }
 
 extension MainVC: CoreDataManagerDelegate {
-    func didUpdateUI(coreDataManager: CoreDataManager, autoGraph: AutographCollectionCellViewModel) {
+    func didUpdateUI(coreDataManager: CoreDataManager, autoGraph: AutographWithSignature) {
         DispatchQueue.main.async {
             self.autographModels.append(autoGraph)
             self.collectionViewGallery.tableViewGallery.reloadData()
