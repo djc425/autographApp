@@ -126,5 +126,4 @@ class AutographCollectionViewCell: UICollectionViewCell {
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         ])
     }
-
 }
